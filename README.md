@@ -6,15 +6,15 @@ This project archive contains engineering materials for a self-driven vehicle's 
 
 - **t-photos** contains some photos of the team
  - **v-photos** contains some photos of the vehicle
- - **video** contains the video.md file with a link to a video where the driving demonstartion exists
+ - **video** contains the video.md file with a link to several videos where the driving demonstration is
  - **schemes** contains several schematic diagrams in the form of PDF,PNG,JPG
- - **src** contains code of control software for all the componentsthat were programmed to participate in the competition
+ - **src** contains code of control software for all the components that were programmed to participate in the competition
  - **models** contains the files for the 3D printed components
 
 
 ## Introduction
 
-Pathfinder is an Arduino Uno-based vehicle robot that has been made for the WRO Future Engineers competition. This documentation provides a thorough overview of its components, design, and the code that drives its performance. The robot utilizes some advanced features such as ultrasonic sensors and a Pixy camera for accurate obstacle detection and color recognition. This document serves as a guide for those interested in understanding and replicating our robot's functionality.
+Pathfinder is an Arduino Uno-based robot vehicle that has been made for the WRO Future Engineers competition. This documentation provides a thorough overview of its components, design, and the code that drives its performance. The robot utilizes some advanced features such as ultrasonic sensors and a Pixy camera for accurate obstacle detection and color recognition. This document serves as a guide for those interested in understanding and replicating our robot's functionality.
 
 ## About Us
 
