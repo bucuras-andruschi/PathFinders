@@ -1,0 +1,77 @@
+#include <Servo.h>
+
+Pixy2 pixy;
+Servo myservo;
+
+int motorLeftPin1 = 5;  // Pin pentru motor stânga înainte
+int motorLeftPin2 = 6;  // Pin pentru motor stânga înapoi
+int motorRightPin1 = 9; // Pin pentru motor dreapta înainte
+int motorRightPin2 = 10; // Pin pentru motor dreapta înapoi
+int numLaps = 0;
+const int maxLaps = 3;
+int yellowLinesDetected = 0; // Contor pentru linii galbene detectate
+int blueLinesDetected = 0; // Contor pentru linii albastre detectate
+
+void setup() {
+  Serial.begin(115200);
+  pixy.init();
+  myservo.attach(3); // Pinul pe care este conectat servomotorul
+
+  pinMode(motorLeftPin1, OUTPUT);
+  pinMode(motorLeftPin2, OUTPUT);
+  pinMode(motorRightPin1, OUTPUT);
+  pinMode(motorRightPin2, OUTPUT);
+}
+
+void loop() {
+  pixy.ccc.getBlocks();
+  
+  if (pixy.ccc.numBlocks) {
+    for (int i = 0; i < pixy.ccc.numBlocks; i++) {
+      if (pixy.ccc.blocks[i].m_signature == 1) { // Linie galbenă detectată
+        yellowLinesDetected++;
+        turnLeft();
+      } else if (pixy.ccc.blocks[i].m_signature == 2) { // Linie albastră detectată
+        blueLinesDetected++;
+        turnLeft();
+      }
+    }
+  }
+
+  moveForward();
+  delay(100); // Adjustați timpul pentru a evita sărituri în buclă
+
+  // Verifică dacă am făcut o tură completă
+  if (checkLapComplete()) {
+    numLaps++;
+    yellowLinesDetected = 0; // Resetăm contorul pentru linii galbene
+    blueLinesDetected = 0; // Resetăm contorul pentru linii albastre
+    if (numLaps == maxLaps) {
+      stopMotors();
+      while (1); // Oprește programul
+    }
+  }
+}
+
+void turnLeft() {
+  myservo.write(60); // Virează la stânga
+}
+
+void moveForward() {
+  digitalWrite(motorLeftPin1, HIGH);
+  digitalWrite(motorLeftPin2, LOW);
+  digitalWrite(motorRightPin1, HIGH);
+  digitalWrite(motorRightPin2, LOW);
+}
+
+void stopMotors() {
+  digitalWrite(motorLeftPin1, LOW);
+  digitalWrite(motorLeftPin2, LOW);
+  digitalWrite(motorRightPin1, LOW);
+  digitalWrite(motorRightPin2, LOW);
+}
+
+bool checkLapComplete() {
+  // Verifică dacă am detectat numărul necesar de linii galbene și albastre pentru a completa o tură
+  return (yellowLinesDetected >= 4 && blueLinesDetected >= 4);
+}
