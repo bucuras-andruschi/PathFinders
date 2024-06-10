@@ -1,0 +1,61 @@
+#include <Pixy2.h>
+#include <Servo.h>
+
+Pixy2 pixy;
+Servo myservo;
+
+int motorLeftPin1 = 5;  // Pin pentru motor stânga înainte
+int motorLeftPin2 = 6;  // Pin pentru motor stânga înapoi
+int motorRightPin1 = 9; // Pin pentru motor dreapta înainte
+int motorRightPin2 = 10;// Pin pentru motor dreapta înapoi
+
+void setup() {
+  Serial.begin(115200);
+  pixy.init();
+  myservo.attach(3); // Pinul pe care este conectat servomotorul
+
+  pinMode(motorLeftPin1, OUTPUT);
+  pinMode(motorLeftPin2, OUTPUT);
+  pinMode(motorRightPin1, OUTPUT);
+  pinMode(motorRightPin2, OUTPUT);
+}
+
+void loop() {
+  pixy.ccc.getBlocks();
+  
+  if (pixy.ccc.numBlocks) {
+    for (int i = 0; i < pixy.ccc.numBlocks; i++) {
+      if (pixy.ccc.blocks[i].m_signature == 3) { // presupunem ca 3 este roșu
+        avoidObstacle('L'); // Ocolire prin stânga
+      } else if (pixy.ccc.blocks[i].m_signature == 4) { // presupunem ca 4 este verde
+        avoidObstacle('R'); // Ocolire prin dreapta
+      }
+    }
+  }
+
+  moveForward();
+  delay(100); // Ajustați timpul pentru a evita sărituri în buclă
+}
+
+void avoidObstacle(char direction) {
+  if (direction == 'L') {
+    myservo.write(60); // Virează la stânga pentru a ocoli obstacolul
+  } else if (direction == 'R') {
+    myservo.write(120); // Virează la dreapta pentru a ocoli obstacolul
+  }
+  delay(500); // Așteaptă puțin timp pentru a ocoli obstacolul
+}
+
+void moveForward() {
+  digitalWrite(motorLeftPin1, HIGH);
+  digitalWrite(motorLeftPin2, LOW);
+  digitalWrite(motorRightPin1, HIGH);
+  digitalWrite(motorRightPin2, LOW);
+}
+
+void stopMotors() {
+  digitalWrite(motorLeftPin1, LOW);
+  digitalWrite(motorLeftPin2, LOW);
+  digitalWrite(motorRightPin1, LOW);
+  digitalWrite(motorRightPin2, LOW);
+}
