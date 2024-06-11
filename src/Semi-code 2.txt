@@ -2,14 +2,14 @@
 
 Pixy2 pixy;
 
-////////////////////////////////////////////////////////
 
-// ENA IN1 IN2 IN3 IN4 ENB
+
+
 int myPins[6] = {5, 6, 7, 8, 9, 10};
 float deadZone = 0.15;
-//int baseSpeed = 130;
 
-////////////////////////////////////////////////////////
+
+
 
 int cont = 0;
 int signature, x, y, width, height;
