@@ -4,15 +4,15 @@
 Pixy2 pixy;
 Servo myservo;
 
-int motorLeftPin1 = 5;  // Pin pentru motor stânga înainte
-int motorLeftPin2 = 6;  // Pin pentru motor stânga înapoi
-int motorRightPin1 = 9; // Pin pentru motor dreapta înainte
-int motorRightPin2 = 10;// Pin pentru motor dreapta înapoi
+int motorLeftPin1 = 5;  
+int motorLeftPin2 = 6; 
+int motorRightPin1 = 9; 
+int motorRightPin2 = 10;
 
 void setup() {
   Serial.begin(115200);
   pixy.init();
-  myservo.attach(3); // Pinul pe care este conectat servomotorul
+  myservo.attach(3); 
 
   pinMode(motorLeftPin1, OUTPUT);
   pinMode(motorLeftPin2, OUTPUT);
@@ -25,20 +25,20 @@ void loop() {
   
   if (pixy.ccc.numBlocks) {
     for (int i = 0; i < pixy.ccc.numBlocks; i++) {
-      if (pixy.ccc.blocks[i].m_signature == 5) { // presupunem ca 5 este rozul pentru parcare
+      if (pixy.ccc.blocks[i].m_signature == 5) { 
         parkCar();
       }
     }
   }
 
   moveForward();
-  delay(100); // Ajustați timpul pentru a evita sărituri în buclă
+  delay(100);
 }
 
 void parkCar() {
   stopMotors();
   Serial.println("Mașina este parcată.");
-  while (1); // Oprește programul
+  while (1); 
 }
 
 void moveForward() {
