@@ -10,7 +10,7 @@ int _output_PWM10 = 10;
 int _output_PWM9 = 9;
 int _led_L = 13;
 
-const int detectionThreshold = 5;  // Number of consecutive detections required
+const int detectionThreshold = 5;  
 int redDetectionCount = 0;
 int greenDetectionCount = 0;
 
@@ -28,20 +28,20 @@ void setup() {
 }
 
 void inainte() {
-    digitalWrite(_output_PD4, LOW);  // Motorul 1 înainte
+    digitalWrite(_output_PD4, LOW);  
     digitalWrite(_output_PD5, HIGH);
-    digitalWrite(_output_PD6, LOW);  // Motorul 2 înainte
+    digitalWrite(_output_PD6, LOW);  
     digitalWrite(_output_PD7, HIGH);
-    analogWrite(_output_PWM9, 100);  // Viteză motor
+    analogWrite(_output_PWM9, 100);  
     analogWrite(_output_PWM10, 100);
 }
 
 void stop() {
-    digitalWrite(_output_PD4, LOW);   // Oprește motorul 1
+    digitalWrite(_output_PD4, LOW);   
     digitalWrite(_output_PD5, LOW);
-    digitalWrite(_output_PD6, LOW);   // Oprește motorul 2
+    digitalWrite(_output_PD6, LOW);   
     digitalWrite(_output_PD7, LOW);
-    analogWrite(_output_PWM9, 0);     // Oprește ambele motoare
+    analogWrite(_output_PWM9, 0);     
     analogWrite(_output_PWM10, 0);
 }
 
@@ -80,5 +80,4 @@ void loop() {
         stop();
     }
 
-    delay(100); // Delay to prevent excessive looping
-}
+    delay(100); 
