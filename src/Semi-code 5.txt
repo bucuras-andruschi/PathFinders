@@ -1,11 +1,11 @@
 #include <SPI.h>
-#include <Pixy2.h> // Include the correct library for PixyCam 2
+#include <Pixy2.h> 
 #include <Servo.h>
 
 Pixy2 pixy;
 Servo servoMotor;
 
-int myPins[6] = {5, 6, 7, 8, 9, 10}; // ENA IN1 IN2 IN3 IN4 ENB
+int myPins[6] = {5, 6, 7, 8, 9, 10}; 
 bool obstacleDetected = false;
 int lastCubeColor = 0; // 1: Red, 2: Green
 
@@ -13,62 +13,62 @@ void setup() {
   Serial.begin(9600);
   Serial.println("Starting...");
   pixy.init();
-  servoMotor.attach(4); // Attaching the servo motor to pin 4
+  servoMotor.attach(4); 
   for (int i = 0; i < 6; i++) {
     pinMode(myPins[i], OUTPUT);
   }
-  moveRobot(0, 0); // Ensure motors are stopped initially
+  moveRobot(0, 0); 
 }
 
 void loop() {
-  moveRobot(50, 50); // Move forward at a very low speed
+  moveRobot(50, 50);
   pixyCheck();
   
   if (obstacleDetected) {
-    // Stop motors before turning servo
+    
     moveRobot(0, 0);
-    if (lastCubeColor == 1) { // Red cube
+    if (lastCubeColor == 1) { 
       // Turn right
-      servoMotor.write(120); // Adjust servo position to turn right
-      delay(500); // Wait for servo to move
+      servoMotor.write(120); 
+      delay(500); 
 
-      // Continue moving forward
+      
       moveRobot(50, 50);
-      delay(500); // Allow some time to move forward
+      delay(500); 
 
       // Return to center
-      moveRobot(0, 0); // Stop motors before turning servo
-      servoMotor.write(90); // Return to center position
-      delay(500); // Wait for servo to move
-    } else if (lastCubeColor == 2) { // Green cube
-      // Turn left
-      servoMotor.write(45); // Adjust servo position to turn left
-      delay(500); // Wait for servo to move
+      moveRobot(0, 0);
+      servoMotor.write(90); 
+      delay(500); 
+    } else if (lastCubeColor == 2) { 
+     
+      servoMotor.write(45); 
+      delay(500); 
 
-      // Continue moving forward
+      
       moveRobot(50, 50);
-      delay(500); // Allow some time to move forward
+      delay(500); 
 
 
 
-      // Return to center
-      moveRobot(0, 0); // Stop motors before turning servo
-      servoMotor.write(90); // Return to center position
-      delay(500); // Wait for servo to move
+      
+      moveRobot(0, 0);
+      servoMotor.write(90); 
+      delay(500);
     }
     
     obstacleDetected = false;
-    lastCubeColor = 0; // Reset last cube color after avoiding the obstacle
+    lastCubeColor = 0; 
   }
 
-  delay(100); // Add a delay to allow the Pixy2 camera to detect objects
+  delay(100); 
 }
 
 int pixyCheck() {
   int blocks = pixy.ccc.getBlocks();
   if (blocks) {
     int signature = pixy.ccc.blocks[0].m_signature;
-    if (signature == 1 || signature == 2) { // Red or green cube
+    if (signature == 1 || signature == 2) { 
       obstacleDetected = true;
       lastCubeColor = signature;
       Serial.print("Detected color: ");
@@ -76,7 +76,7 @@ int pixyCheck() {
       return signature;
     }
   }
-  return 0; // Return 0 if no blocks detected or other color detected
+  return 0; 
 }
 
 void moveRobot(int leftSpeed, int rightSpeed) {
