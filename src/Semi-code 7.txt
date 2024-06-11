@@ -1,58 +1,58 @@
 #include <SPI.h>
-#include <Pixy2.h> // Include the correct library for PixyCam 2
+#include <Pixy2.h> 
 #include <Servo.h>
 
 Pixy2 pixy;
 Servo servoMotor;
 
-int myPins[6] = {2, 3, 4, 5, 6, 7}; // ENA IN1 IN2 IN3 IN4 ENB
+int myPins[6] = {2, 3, 4, 5, 6, 7}; 
 float deadZone = 0.15;
 bool obstacleDetected = false;
-int lastCubeColor = 0; // 1: Red, 2: Green
+int lastCubeColor = 0; 
 
 void setup() {
   Serial.begin(9600);
   Serial.println("Starting...");
   pixy.init();
-  servoMotor.attach(8); // Attaching the servo motor to pin 4
+  servoMotor.attach(8); 
   for (int i = 0; i < 6; i++) {
     pinMode(myPins[i], OUTPUT);
   }
 }
 
 void loop() {
-  moveRobot(170, 170); // Adjust speed values according to your robot's dynamics for going forward
+  moveRobot(170, 170); 
   pixyCheck();
   
   if (obstacleDetected) {
-    if (lastCubeColor == 1) { // Red cube
-      // Swerving right
+    if (lastCubeColor == 1) { 
+   
+      servoMotor.write(120);
+      delay(500); 
+      
+      
+      while (pixyCheck() != 0); 
+      servoMotor.write(45); 
+      delay(500); 
+      
+     
+      servoMotor.write(90); 
+    } else if (lastCubeColor == 2) { 
+      
+      servoMotor.write(45); 
+      delay(500); 
+      
+     
+      while (pixyCheck() != 0); 
       servoMotor.write(120); // Adjust servo position to turn right
-      delay(500); // Adjust delay according to your control loop requirements for avoiding the obstacle
+      delay(500);
       
-      // Continue moving forward and then correct to left
-      while (pixyCheck() != 0); // Wait until the cube is not detected
-      servoMotor.write(45); // Adjust servo position to turn left
-      delay(500); // Adjust delay according to your control loop requirements for correcting
-      
-      // Return to center
-      servoMotor.write(90); // Return to center position
-    } else if (lastCubeColor == 2) { // Green cube
-      // Swerving left
-      servoMotor.write(45); // Adjust servo position to turn left
-      delay(500); // Adjust delay according to your control loop requirements for avoiding the obstacle
-      
-      // Continue moving forward and then correct to right
-      while (pixyCheck() != 0); // Wait until the cube is not detected
-      servoMotor.write(120); // Adjust servo position to turn right
-      delay(500); // Adjust delay according to your control loop requirements for correcting
-      
-      // Return to center
-      servoMotor.write(90); // Return to center position
+   
+      servoMotor.write(90);
     }
     
     obstacleDetected = false;
-    lastCubeColor = 0; // Reset last cube color after avoiding the obstacle
+    lastCubeColor = 0; 
   }
 }
 
@@ -60,13 +60,13 @@ float pixyCheck() {
   int blocks = pixy.ccc.getBlocks();
   if (blocks) {
     int signature = pixy.ccc.blocks[0].m_signature;
-    if (signature == 1 || signature == 2) { // Red or green cube
+    if (signature == 1 || signature == 2) { 
       obstacleDetected = true;
       lastCubeColor = signature;
       return signature;
     }
   }
-  return 0; // Return 0 if no blocks detected or other color detected
+  return 0; 
 }
 
 void moveRobot(int leftSpeed, int rightSpeed) {
