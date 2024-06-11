@@ -3,19 +3,19 @@
 Pixy2 pixy;
 Servo myservo;
 
-int motorLeftPin1 = 5;  // Pin pentru motor stânga înainte
-int motorLeftPin2 = 6;  // Pin pentru motor stânga înapoi
-int motorRightPin1 = 9; // Pin pentru motor dreapta înainte
-int motorRightPin2 = 10; // Pin pentru motor dreapta înapoi
+int motorLeftPin1 = 5;  
+int motorLeftPin2 = 6;  
+int motorRightPin1 = 9; 
+int motorRightPin2 = 10; 
 int numLaps = 0;
 const int maxLaps = 3;
-int yellowLinesDetected = 0; // Contor pentru linii galbene detectate
-int blueLinesDetected = 0; // Contor pentru linii albastre detectate
+int yellowLinesDetected = 0; 
+int blueLinesDetected = 0; 
 
 void setup() {
   Serial.begin(115200);
   pixy.init();
-  myservo.attach(3); // Pinul pe care este conectat servomotorul
+  myservo.attach(3); 
 
   pinMode(motorLeftPin1, OUTPUT);
   pinMode(motorLeftPin2, OUTPUT);
@@ -28,10 +28,10 @@ void loop() {
   
   if (pixy.ccc.numBlocks) {
     for (int i = 0; i < pixy.ccc.numBlocks; i++) {
-      if (pixy.ccc.blocks[i].m_signature == 1) { // Linie galbenă detectată
+      if (pixy.ccc.blocks[i].m_signature == 1) { 
         yellowLinesDetected++;
         turnLeft();
-      } else if (pixy.ccc.blocks[i].m_signature == 2) { // Linie albastră detectată
+      } else if (pixy.ccc.blocks[i].m_signature == 2) { 
         blueLinesDetected++;
         turnLeft();
       }
@@ -39,22 +39,22 @@ void loop() {
   }
 
   moveForward();
-  delay(100); // Adjustați timpul pentru a evita sărituri în buclă
+  delay(100);
 
-  // Verifică dacă am făcut o tură completă
+  
   if (checkLapComplete()) {
     numLaps++;
-    yellowLinesDetected = 0; // Resetăm contorul pentru linii galbene
-    blueLinesDetected = 0; // Resetăm contorul pentru linii albastre
+    yellowLinesDetected = 0;
+    blueLinesDetected = 0; 
     if (numLaps == maxLaps) {
       stopMotors();
-      while (1); // Oprește programul
+      while (1); 
     }
   }
 }
 
 void turnLeft() {
-  myservo.write(60); // Virează la stânga
+  myservo.write(60); 
 }
 
 void moveForward() {
@@ -72,6 +72,6 @@ void stopMotors() {
 }
 
 bool checkLapComplete() {
-  // Verifică dacă am detectat numărul necesar de linii galbene și albastre pentru a completa o tură
+  
   return (yellowLinesDetected >= 4 && blueLinesDetected >= 4);
 }
