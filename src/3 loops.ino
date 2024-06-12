@@ -5,10 +5,10 @@
 // TCS3200 color sensor pins
 #define S0 9
 #define S1 10
-#define S2 11
-#define S3 12
+#define S2 12
+#define S3 11
 #define sensorOut 13
-#define OUTPUT_ENABLE_PIN 52 // Define the output enable pin
+#define OUTPUT_ENABLE_PIN 16 // Define the output enable pin
 
 
 
