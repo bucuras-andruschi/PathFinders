@@ -1,3 +1,4 @@
+
 #include <SPI.h>
 #include <Pixy2.h> // Include the correct library for PixyCam 2
 #include <Servo.h>
@@ -32,45 +33,6 @@ float deadZone = 0.15;
 bool obstacleDetected = false;
 int lastCubeColor = 0; // 1: Red, 2: Green
 
-void setup() {
-  Serial.begin(9600);
-  Serial.println("Starting...");
-
-  
-  // Attach the servo motor to pin 8
-  servoMotor.attach(8);
-
-  // Set motor control pins as outputs
-  for (int i = 0; i < 6; i++) {
-    pinMode(myPins[i], OUTPUT);
-  }
-
-  // Set the color sensor pins as outputs
-  pinMode(S0, OUTPUT);
-  pinMode(S1, OUTPUT);
-  pinMode(S2, OUTPUT);
-  pinMode(S3, OUTPUT);
-  pinMode(sensorOut, INPUT);
-  
-  // Set the output enable pin as output and initially enable it
-  pinMode(OUTPUT_ENABLE_PIN, OUTPUT);
-  digitalWrite(OUTPUT_ENABLE_PIN, HIGH); // Enable output by default
-
-  // Set frequency scaling to 20%
-  digitalWrite(S0, HIGH);
-  digitalWrite(S1, LOW);
-
-  // Initialize ultrasonic sensor pins
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
-}
-
-void loop() {  
-  checkColorSensor(); // Check the color sensor and adjust servo accordingly
-}
-
-
-
 void moveRobot(int leftSpeed, int rightSpeed) {
   if (leftSpeed >= 0) {
     digitalWrite(myPins[1], HIGH);
@@ -91,6 +53,7 @@ void moveRobot(int leftSpeed, int rightSpeed) {
   analogWrite(myPins[0], abs(leftSpeed));
   analogWrite(myPins[5], abs(rightSpeed));
 }
+
 
 void checkColorSensor() {
   // Enable the output before reading
@@ -133,16 +96,52 @@ void checkColorSensor() {
   
   if (green <= 0 && blue <= 0 && red <= 0) {
     // Detected white color
-    moveRobot(100, 100);
+    moveRobot(125, 125);
     Serial.println("Detected color: White");
     servoMotor.write(90); // Keep servo at 90 degrees
   } else {
     // Detected any other color
-    moveRobot(100, 100);
+    moveRobot(125, 125);
     Serial.println("Detected color: Not white");
     servoMotor.write(120); // Move servo to 120 degrees
-    delay(1550); // Wait for 1550 ms
+    delay(1000); // Wait for 500 ms
     servoMotor.write(90); // Return servo to 90 degrees
   }
  
+}
+
+
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Starting...");
+
+  
+  // Attach the servo motor to pin 8
+  servoMotor.attach(8);
+
+  // Set motor control pins as outputs
+  for (int i = 0; i < 6; i++) {
+    pinMode(myPins[i], OUTPUT);
+  }
+
+  // Set the color sensor pins as outputs
+  pinMode(S0, OUTPUT);
+  pinMode(S1, OUTPUT);
+  pinMode(S2, OUTPUT);
+  pinMode(S3, OUTPUT);
+  pinMode(sensorOut, INPUT);
+  
+  // Set the output enable pin as output and initially enable it
+  pinMode(OUTPUT_ENABLE_PIN, OUTPUT);
+  digitalWrite(OUTPUT_ENABLE_PIN, HIGH); // Enable output by default
+
+  // Set frequency scaling to 20%
+  digitalWrite(S0, HIGH);
+  digitalWrite(S1, LOW);
+
+}
+
+void loop() {  
+  checkColorSensor(); // Check the color sensor and adjust servo accordingl
 }
