@@ -1,6 +1,5 @@
 i#include <Servo.h>
 #include <SPI.h>
-#include <Pixy2.h>
 
 // TCS3200 color sensor pins
 #define S0 9
@@ -24,7 +23,7 @@ int red = 0;
 int green = 0;
 int frequency = 0;
 
-Pixy2 pixy;
+//Pixy2 pixy;
 Servo servoMotor;
 
 // Motor control pins (ENA, IN1, IN2, IN3, IN4, ENB)
